@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/ccollett/.claude/skills/**)",
+      "Read(//Users/ccollett/.claude/plugins/**)",
+      "Read(//Users/ccollett/.claude/**)",
+      "Bash(python3 -m json.tool)",
+      "Read(//Users/ccollett/Desktop/**)",
+      "Bash(python3 ~/.claude/plugins/marketplaces/claude-plugins-official/plugins/skill-creator/skills/skill-creator/scripts/package_skill.py /Users/ccollett/Desktop/board-game-design)",
+      "Bash(python3 scripts/package_skill.py /Users/ccollett/Desktop/board-game-design /Users/ccollett/Desktop)",
+      "Bash(python3 -c ' *)",
+      "Bash(zip -r board-game-design-plugin.zip board-game-design --exclude \"board-game-design/.DS_Store\" --exclude \"board-game-design/references/.DS_Store\" --exclude \"board-game-design/.claude/*\")",
+      "Bash(claude plugin *)",
+      "Bash(unzip -l board-game-design-plugin.zip)",
+      "Bash(rm -f board-game-design-plugin.zip)",
+      "Bash(echo \"SKILL.md count: $\\(unzip -l board-game-design-plugin.zip)"
+    ]
+  }
+}
