@@ -1,0 +1,23 @@
+{
+  "skill_name": "voice-profile-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here are two Zoom transcripts from podcast episodes I hosted (~1,500 words total). Build my voice profile.",
+      "expected_output": "Asks for name and target content types before analysis. Reports total word count and flags that ~1,500 words is below the 2,000-word high-confidence threshold. Calls out which dimensions will be low confidence (Dimension 4 structural patterns and the closing-style portion of Dimension 7, since transcripts dominate). Produces both [name]-voice-prompt.md and [name]-voice.skill with all dimensions filled in and verbatim source quotes for every trait.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I've uploaded three of my blog posts as .md files. Make a voice skill from my writing — I want to use it for LinkedIn posts and email newsletters.",
+      "expected_output": "Confirms the name to use in filenames. Recognizes content types are already specified (LinkedIn posts, email newsletters) and does not re-ask. Weights written samples appropriately for structural patterns and openings/closings. Produces a [name]-voice.skill whose generated SKILL.md includes a Content Type Notes section with one subsection per declared content type. Quality gate confirms the embedded voice profile is a complete copy, not a reference to the prompt file.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Analyze my voice. Here's a 400-word LinkedIn post I wrote last month: [text]",
+      "expected_output": "Reports the inventory: 400 words, well below the 2,000-word threshold. Asks the user whether to proceed despite low confidence. If the user proceeds, produces both output files but explicitly flags every dimension where source material is insufficient inside the relevant section — does not invent traits to fill gaps. The closing summary recommends adding more material and re-running.",
+      "files": []
+    }
+  ]
+}
