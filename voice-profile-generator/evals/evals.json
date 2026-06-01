@@ -3,20 +3,62 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Here are two Zoom transcripts from podcast episodes I hosted (~1,500 words total). Build my voice profile.",
-      "expected_output": "Asks for name and target content types before analysis. Reports total word count and flags that ~1,500 words is below the 2,000-word high-confidence threshold. Calls out which dimensions will be low confidence (Dimension 4 structural patterns and the closing-style portion of Dimension 7, since transcripts dominate). Produces both [name]-voice-prompt.md and [name]-voice.skill with all dimensions filled in and verbatim source quotes for every trait.",
+      "prompt": "Build my voice profile from my Granola notes.",
+      "expected_output": "Runs Mode A provider discovery, detects the Granola connector specifically (user asked for it), and reports it as the available provider for this run. Asks for the time window or count to pull (defaulting to a sensible window like last 90 days / last ~20 meetings). Lists candidate Granola meetings with title/date and lets the user deselect anything irrelevant before fetching. Confirms the user's name and (optionally) target content types once. Runs the seven-dimension analysis and writes references/voice-profile.md from the template in profile-format.md — including a YAML metadata header with a per-provider last_synced map (with at least a granola entry), sources entries carrying origin: provider and provider: granola, cumulative_word_count, per-dimension confidence flags, and a Profile Update Log seeded with an Initial build entry tagged as a Provider sync from granola. Does NOT produce a separate portable prompt file or a zipped .skill. Passes the single-file quality gate before announcing completion.",
       "files": []
     },
     {
       "id": 2,
-      "prompt": "I've uploaded three of my blog posts as .md files. Make a voice skill from my writing — I want to use it for LinkedIn posts and email newsletters.",
-      "expected_output": "Confirms the name to use in filenames. Recognizes content types are already specified (LinkedIn posts, email newsletters) and does not re-ask. Weights written samples appropriately for structural patterns and openings/closings. Produces a [name]-voice.skill whose generated SKILL.md includes a Content Type Notes section with one subsection per declared content type. Quality gate confirms the embedded voice profile is a complete copy, not a reference to the prompt file.",
+      "prompt": "Get the latest meeting notes and update my voice profile.",
+      "expected_output": "Runs Mode A in incremental mode using the generic phrasing (no specific provider named). Reads references/voice-profile.md, parses the per-provider last_synced map, and queries every currently available provider for items newer than that provider's own watermark. Dedupes against the profile's existing sources by id. Shows the candidate new set to the user broken down by provider; lets them deselect items before fetching. Analyzes only the new material, merges into existing dimensions (does not regenerate from scratch), preserves prior verbatim examples while adding new ones, raises confidence flags where the new material warrants it, bumps last_synced[provider] only for providers that successfully ran this run (leaves others untouched), appends new entries to sources with the correct provider field, recomputes cumulative_word_count, and prepends a Provider sync changelog entry naming the providers, the per-provider source counts, the dimensions touched, and any confidence changes. Reports the per-provider delta to the user.",
       "files": []
     },
     {
       "id": 3,
-      "prompt": "Analyze my voice. Here's a 400-word LinkedIn post I wrote last month: [text]",
-      "expected_output": "Reports the inventory: 400 words, well below the 2,000-word threshold. Asks the user whether to proceed despite low confidence. If the user proceeds, produces both output files but explicitly flags every dimension where source material is insufficient inside the relevant section — does not invent traits to fill gaps. The closing summary recommends adding more material and re-running.",
+      "prompt": "Build my voice profile from Fireflies.",
+      "expected_output": "Provider discovery detects Fireflies (MCP server or API token). Loads references/transcript-providers.md only when wiring Fireflies — uses the GraphQL transcripts list/query pattern and stitches sentences[] into a single string with speaker labels preserved. Otherwise follows the same Mode A first-build flow: window selection, candidate review/deselect, fetch survivors, run seven-dimension analysis, write the profile with origin: provider and provider: fireflies on the source entries, and a last_synced map with a fireflies entry. Passes the quality gate. Demonstrates the skill is not Granola-specific.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Sync my Granola notes and pull anything new from Zoom into my voice profile.",
+      "expected_output": "Multi-provider incremental update. Provider discovery surfaces both Granola (MCP) and Zoom (Cloud Recording API token or a folder of .vtt exports). For each provider, queries items newer than last_synced[provider], dedupes against existing sources, and shows the candidate set to the user with provider, title, and date — the user can deselect items per provider. For Zoom .vtt material, strips the WEBVTT header and HH:MM:SS.mmm cue timings before analysis. Analyzes the combined new material, merges into existing dimensions, and prepends a single Provider sync changelog entry with a per-provider breakdown (e.g. '2 Granola + 3 Zoom'), the dimensions touched, confidence changes, and the list of providers whose last_synced watermark moved. Bumps last_synced only for providers that successfully ran; if one provider returned nothing this run, the changelog says so and that provider's watermark is unchanged.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Pull from Otter.",
+      "expected_output": "Provider discovery does NOT find Otter available (no Otter MCP, no API token, no folder of Otter exports). The skill tells the user which providers it actually sees (e.g. 'I see Granola and Zoom available, but not Otter') and asks whether to proceed with the available providers, switch to fallback paste/file/folder ingestion, or wire Otter up first (MCP server name, API token, or a folder of exports). Does NOT silently substitute a different provider, and does NOT modify the profile.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Draft a LinkedIn post in my voice about pricing transparency.",
+      "expected_output": "Recognizes a Mode B writing-session request. Reads references/voice-profile.md before drafting (and surfaces any low-confidence dimensions relevant to LinkedIn posts up front). If the profile does not exist, refuses Mode B and switches to Mode A. Drafts using the profile's Voice Signature, Vocabulary lists, Opening pattern, Closings, and Rhetorical Moves, runs the in-profile self-review checklist, and presents the draft with a single brief framing note. Iterates with the user, keeping an internal session journal of every correction, rejected/preferred word, and structural change.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "[Mid-Mode-B writing session, after a few rounds of edits] That's the version. Ship it.",
+      "expected_output": "Enters Phase 3 of writing-session.md. Presents a Post-Session Feedback Summary that lists: feedback heard (in the user's own words where possible), editing choices made (structural/stylistic), and what each signal implies about specific profile dimensions (e.g. 'Lexical Fingerprint -> add \"in essence\" to Avoid list'). Distinguishes durable signals from one-off preferences. Ends by asking 'Want me to update your voice profile with these signals?' and waits for the user's answer. On 'yes', applies targeted edits per writing-session.md's playbook to references/voice-profile.md and appends an In-session update changelog entry naming the dimensions touched (last_synced map is unchanged since no provider sync happened). On 'no', leaves the profile unchanged and tells the user the session is closed.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "[Mid-Mode-B writing session] Actually, add 'in essence' to my avoid list — I'd never say that.",
+      "expected_output": "Treats this as a mid-session profile update. Does NOT wait for Phase 3. Opens references/voice-profile.md, adds 'in essence' to Vocabulary -> Avoid these with a brief note, appends an In-session update changelog entry (last_synced map untouched), reloads the updated Vocabulary section into context so the rest of the session honors the new rule, and continues drafting. Confirms the change in one line.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "Build my voice profile from this folder of Zoom recordings: ~/Documents/zoom-transcripts",
+      "expected_output": "Provider discovery treats the folder of Zoom .vtt exports as a Zoom provider (file-based). Glob enumerates **/*.{txt,md,docx,vtt} under the folder. For each .vtt, strips the WEBVTT header and cue timing lines before analysis. Classifies items as transcripts (the parent folder name matches the recordings/zoom keyword set). Reports the inventory per file. Writes the profile with sources entries carrying origin: provider, provider: zoom, and id set to the file path. The last_synced map has a zoom entry equal to the newest source date in the folder. Initial-build changelog entry is tagged as a Provider sync from zoom.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "Build my voice profile. [pastes two .md blog posts inline, ~1,800 words total]",
+      "expected_output": "Provider discovery finds no transcript providers available and tells the user the skill is running in fallback mode (paste/file/folder ingestion) — explicitly notes that the incremental 'get the latest meeting notes' update path won't work until at least one provider is enabled. Otherwise runs Mode A as a first build using the pasted material: reports the inventory, classifies sources as written samples (no provider, origin: pasted), confirms name and content types, runs the seven-dimension analysis (weighting written samples heavily for structural patterns and openings/closings), writes references/voice-profile.md with cumulative_word_count and per-dimension confidence reflecting that only written samples were available. The last_synced map is omitted (or empty) since no provider was used. Seeds the Profile Update Log with an Initial build entry tagged as a Manual sources update. Still produces no portable prompt and no .skill zip.",
       "files": []
     }
   ]

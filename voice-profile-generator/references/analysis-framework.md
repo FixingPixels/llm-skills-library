@@ -1,12 +1,14 @@
 ---
 title: Voice Analysis Framework
-load_at: step-2
-summary: Seven-dimension deep voice analysis with verbatim example requirements and source-type weighting
+load_at: mode-a-step-2
+summary: Seven-dimension deep voice analysis with verbatim example requirements, source-type weighting, and an incremental-update note for ongoing Granola syncs
 ---
 
 # Voice Analysis Framework
 
 Work through all 7 dimensions below. For each, pull **2–4 verbatim examples** from the source material. If a dimension is unclear from what's available, note it and flag low confidence.
+
+On an **incremental update** (the profile already exists and Mode A is being re-run with new material), see [Incremental updates](#incremental-updates) before working the dimensions.
 
 ## Contents
 
@@ -18,6 +20,7 @@ Work through all 7 dimensions below. For each, pull **2–4 verbatim examples** 
 6. [Dimension 6 — What This Voice Is NOT](#dimension-6--what-this-voice-is-not)
 7. [Dimension 7 — Signature Examples](#dimension-7--signature-examples)
 8. [Source Type Weighting](#source-type-weighting)
+9. [Incremental updates](#incremental-updates)
 
 ---
 
@@ -120,3 +123,15 @@ Weight transcript vs. written material differently:
 - **Written content** captures intentional craft — openings and closings they've chosen to keep, vocabulary selected during editing. Trust these for: structural patterns, argument architecture, opening/closing style.
 
 When both are available, note in the analysis which dimensions drew primarily from which source type. When only transcripts are available, flag that Dimensions 4 (structural patterns) and the closing style may shift once the person writes vs. speaks.
+
+---
+
+## Incremental updates
+
+When the profile already exists and Mode A is re-run with new material (typical case: "get the latest Granola notes"):
+
+- **Analyze only the new material**, not the full historical corpus. The prior analysis is already encoded in the profile.
+- **Merge findings into existing dimensions** rather than starting from scratch. Add new verbatim examples to the matching dimension instead of replacing the old ones. Keep the best 2–4 examples per dimension overall — prefer recent or unusually crisp ones, but never below 2.
+- **Firm up low-confidence dimensions as volume grows.** Track which dimensions were previously low confidence and check whether the new material lifts them. Raise the `confidence` flag in the metadata header when a dimension crosses the threshold (see [`profile-format.md`](profile-format.md) §3).
+- **Flag contradictions explicitly.** If the new material contradicts a prior finding (e.g. the person used to never use bullet lists and now uses them constantly), do not silently overwrite. Note the contradiction in the changelog entry for this update and update the section with the new pattern plus a brief "shifted from X to Y" note.
+- **Skip dimensions the new material doesn't touch.** If a Granola sync brings in three short meetings and none of them illuminate Dimension 4 (structural patterns), leave that dimension alone.
