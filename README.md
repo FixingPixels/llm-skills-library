@@ -9,6 +9,8 @@ Maintained by [Fixing Pixels](https://github.com/FixingPixels).
 | Skill | Description | Docs |
 |-------|-------------|------|
 | [**board-game-design**](board-game-design/) | Design partner for solo tabletop designers — concept through rulebook, playtesting, and art direction. | [README](board-game-design/README.md) |
+| [**brainstorm-synthesis-portable**](brainstorm-synthesis-portable/) | Synthesizes a brainstorming session into a structured Idea Register — tags ideas by lens, scores rough viability, and surfaces cross-idea patterns. Writes files when a folder is mounted, falls back to inline output otherwise. | [README](brainstorm-synthesis-portable/README.md) |
+| [**code-reflection**](code-reflection/) | Reads your codebase and commit history to profile how you build, then produces a sourced capability report and a prioritized growth plan. Ships two skills: `repo-capability-analyst` and `growth-planner`. | [README](code-reflection/README.md) |
 | [**mobile-app-designer**](mobile-app-designer/) | Design partner for indie mobile apps — idea validation through UX, onboarding, visual design, stack, and monetization. | [README](mobile-app-designer/README.md) |
 | [**voice-profile-generator**](voice-profile-generator/) | Builds and maintains a living voice profile from meeting transcripts and writing samples; drives drafting sessions with a feedback loop. | [README](voice-profile-generator/README.md) |
 | [**ux-wireframing-engine**](ux-wireframing-engine/) | Turns PRDs, design specs, and API contracts into grayscale HTML/Tailwind wireframes with requirement traceability. | [SKILL.md](ux-wireframing-engine/SKILL.md) |
@@ -16,6 +18,10 @@ Maintained by [Fixing Pixels](https://github.com/FixingPixels).
 ### Trigger examples
 
 **board-game-design** — "I'm making a board game about cybernetic gardening", "Review my rules for a medium-weight Euro", "My blind playtest failed because end-game dragged"
+
+**brainstorm-synthesis-portable** — "Summarize what we covered", "Capture these ideas", "What patterns are you seeing?", "Let's wrap up this session"
+
+**code-reflection** — "Analyze this repo and tell me who I am as a builder", "Profile my codebase from my code and commits", "What should I work on next?"
 
 **mobile-app-designer** — "I want to build an app that helps people track water intake", "Design an onboarding flow for a habit tracker", "Should this be a modal or a sheet?"
 
@@ -29,10 +35,12 @@ Each skill lives in its own top-level directory:
 
 ```
 llm-skills-library/
-├── board-game-design/          # Multi-skill plugin (7 sub-skills + references)
-├── mobile-app-designer/        # Multi-skill plugin (7 sub-skills + references)
-├── voice-profile-generator/    # Living profile skill (references + evals)
-├── ux-wireframing-engine/      # Single-file skill
+├── board-game-design/              # Multi-skill plugin (7 sub-skills + references)
+├── brainstorm-synthesis-portable/  # Single skill (references) — portable Idea Register
+├── code-reflection/                # Multi-skill package (2 sub-skills + references/templates)
+├── mobile-app-designer/            # Multi-skill plugin (7 sub-skills + references)
+├── voice-profile-generator/        # Living profile skill (references + evals)
+├── ux-wireframing-engine/          # Single-file skill
 └── LICENSE
 ```
 
