@@ -29,6 +29,16 @@ Maintained by [Fixing Pixels](https://github.com/FixingPixels).
 
 **ux-wireframing-engine** — "Turn this PRD into wireframes", "Build a dashboard layout from these API specs with REQ traceability"
 
+## Commands
+
+Reusable [Cursor commands](https://docs.cursor.com/context/commands) for repo maintenance and agent workflows. Copy a command file into your project's `.cursor/commands/` directory (or your user-level commands folder).
+
+| Command | Description |
+|---------|-------------|
+| [**audit-ai-harness**](commands/audit-ai-harness.md) | Audits a repository's AI-first development setup (rules, skills, MCP, guardrails) and writes a sourced maturity report to `docs/ai-harness.md`. Read-only except for the report. |
+
+**Trigger example** — "Audit this repo's AI harness", "Run an AI harness audit and write the report"
+
 ## Repository layout
 
 Each skill lives in its own top-level directory:
@@ -38,6 +48,7 @@ llm-skills-library/
 ├── board-game-design/              # Multi-skill plugin (7 sub-skills + references)
 ├── brainstorm-synthesis-portable/  # Single skill (references) — portable Idea Register
 ├── code-reflection/                # Multi-skill package (2 sub-skills + references/templates)
+├── commands/                       # Reusable Cursor commands
 ├── mobile-app-designer/            # Multi-skill plugin (7 sub-skills + references)
 ├── voice-profile-generator/        # Living profile skill (references + evals)
 ├── ux-wireframing-engine/          # Single-file skill
@@ -101,6 +112,13 @@ rsync -a /path/to/llm-skills-library/<skill-name>/ ~/.cursor/skills/<skill-name>
 ```
 
 Cursor discovers skills from `SKILL.md` frontmatter. Restart or reload the agent session after adding or updating a skill.
+
+For commands, copy files from `commands/` into `.cursor/commands/` (project-level) or `~/.cursor/commands/` (user-level):
+
+```bash
+mkdir -p ~/.cursor/commands
+cp /path/to/llm-skills-library/commands/*.md ~/.cursor/commands/
+```
 
 ### Other assistants
 
